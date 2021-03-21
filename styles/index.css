@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#procon-list {
+  grid-template-rows: 3rem auto;
+}
