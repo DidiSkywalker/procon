@@ -7,19 +7,28 @@ export default function useList(
   entries?: ListItem[]
 ): [
   ListItem[],
-  (text: string, ...rest: any[]) => void,
+  (values: { text: string; weight: number; [x: string]: any }) => void,
   (id: string) => void,
   () => void
 ] {
   const [list, setList] = useState(entries || [])
 
-  const add = (text: string, ...rest: any[]) => {
+  const add = ({
+    text,
+    weight,
+    ...rest
+  }: {
+    text: string
+    [x: string]: any
+  }) => {
     const item = {
       id: v4(),
       text,
       pro,
+      weight,
       ...rest,
     }
+    console.log('add', item)
     setList([...list, item])
   }
 

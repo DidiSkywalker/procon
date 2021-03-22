@@ -3,5 +3,19 @@
 @tailwind utilities;
 
 #procon-list {
-  grid-template-rows: 4rem auto;
+  grid-template-rows: 5rem auto;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
+  border-radius: 9999px;
+  pointer-events: all;
+}
+
+input[type='range']::-webkit-slider-thumb:hover {
+  cursor: pointer;
+  background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
 }
