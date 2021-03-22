@@ -18,7 +18,7 @@ module.exports = {
 
       black: colors.black,
       white: colors.white,
-      gray: colors.coolGray,
+      gray: { ...colors.coolGray, 1000: '#0d131f' },
       red: colors.red,
       yellow: colors.amber,
       lime: colors.lime,
@@ -804,7 +804,7 @@ module.exports = {
     clear: ['responsive'],
     container: ['responsive'],
     cursor: ['responsive', 'hover'],
-    display: ['responsive'],
+    display: ['responsive', 'hover', 'group-hover'],
     divideColor: ['responsive', 'dark'],
     divideOpacity: ['responsive', 'dark'],
     divideStyle: ['responsive'],

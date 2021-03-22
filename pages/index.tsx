@@ -1,114 +1,99 @@
-import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  FormEvent,
-  useReducer,
-  useState,
-} from 'react'
+import React, { useState } from 'react'
 import Item from '../components/Item'
-import { ProConItem } from '../interfaces'
-import { v4 } from 'uuid'
+import useList from '../hooks/useList'
+import NewItem from '../components/NewItem'
 
-enum ActionType {
-  ADD_PRO,
-  ADD_CONTRA,
-  REMOVE_PRO,
-  REMOVE_CONTRA,
-}
-interface Action {
-  type: ActionType
-  payload: any
-}
-interface State {
-  pro: ProConItem[]
-  contra: ProConItem[]
-}
+const MIN_INPUT_LENGTH = 1
+
 export default function IndexPage() {
-  const [proValue, setProValue] = useState('')
-  const [contraValue, setContraValue] = useState('')
-  const [state, dispatch] = useReducer(
-    (prevState: State, action: Action) => {
-      switch (action.type) {
-        case ActionType.ADD_PRO: {
-          const proList = prevState.pro
-          proList.push(action.payload.item)
-          return {
-            ...prevState,
-            pro: proList,
-          }
-        }
-      }
-      return prevState
-    },
-    {
-      pro: [],
-      contra: [],
-    }
-  )
+  const [pro, addPro, removePro, clearPro] = useList(true)
+  const [contra, addContra, removeContra, clearContra] = useList(false)
+  const [selected, setSelected] = useState<string | null>(null)
 
-  const addPro = (event: FormEvent) => {
-    event.preventDefault()
-    dispatch({
-      type: ActionType.ADD_PRO,
-      payload: {
-        item: {
-          id: v4(),
-          text: proValue,
-          weight: 1,
-        },
-      },
-    })
-  }
-
-  const handleProChange: ChangeEventHandler<HTMLTextAreaElement> = (event) => {
-    setProValue(event.target.value)
-  }
   return (
-    <div id="procon-list" className="grid h-screen grid-cols-2 gap-2">
-      <div className="flex items-center justify-center rounded-r-sm bg-gradient-to-l from-green-700 via-green-500 to-transparent">
-        <h2 className="text-2xl font-bold text-gray-900">Pro</h2>
+    <div
+      id="procon-list"
+      className="grid grid-cols-2 gap-y-3 sm:gap-3 md:gap-5 xl:gap-10"
+    >
+      <div className="relative flex items-center justify-center mb-2 rounded-tr-sm bg-gradient-to-l from-green-700 via-green-500 to-transparent">
+        <div className="absolute bottom-0 left-0 right-0 h-2 transform translate-y-2 bg-gradient-to-l from-green-900 via-green-900 to-transparent"></div>
+        <h2 className="w-full text-2xl font-bold text-center text-gray-900">
+          Pros
+        </h2>
+        <svg
+          className="absolute top-0 bottom-0 right-0 w-10 p-1 my-auto mr-1 opacity-25 text-gray-50 hover:opacity-100 hover:cursor-pointer hover:bg-green-800 rounded-3xl"
+          onClick={() => clearPro()}
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+          />
+        </svg>
       </div>
-      <div className="flex items-center justify-center rounded-l-sm bg-gradient-to-r from-red-700 via-red-500 to-transparent">
-        <h2 className="text-2xl font-bold text-gray-900">Contra</h2>
+      <div className="relative flex items-center justify-center mb-2 rounded-tl-sm bg-gradient-to-r from-red-700 via-red-500 to-transparent">
+        <div className="absolute bottom-0 left-0 right-0 h-2 transform translate-y-2 bg-gradient-to-r from-red-900 via-red-900 to-transparent"></div>
+        <svg
+          className="absolute top-0 bottom-0 left-0 w-10 p-1 my-auto ml-1 opacity-25 text-gray-50 hover:opacity-100 hover:cursor-pointer hover:bg-red-800 rounded-3xl"
+          onClick={() => clearContra()}
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+          />
+        </svg>
+        <h2 className="w-full text-2xl font-bold text-center text-gray-900">
+          Cons
+        </h2>
       </div>
 
-      <div className="px-3 text-gray-900">
-        <ul className="space-y-3 text-gray-900">
-          {state.pro.map((item) => (
-            <Item key={item.id} item={item} pro />
+      <div className="px-1 sm:px-3">
+        <ul className="text-gray-900">
+          {pro.map((item) => (
+            <Item
+              key={item.id}
+              item={item}
+              active={selected === item.id}
+              pro
+              onDelete={() => removePro(item.id)}
+              onClick={() =>
+                selected === item.id ? setSelected(null) : setSelected(item.id)
+              }
+            />
           ))}
           <li className="w-full mt-4">
-            <form onSubmit={addPro} className="flex flex-row items-end">
-              <textarea
-                className="flex-1 text-white bg-transparent border-b-2 border-white focus:outline-none"
-                placeholder="Add a new item"
-                value={proValue}
-                onChange={handleProChange}
-              />
-              <button className="box-content flex-grow-0 p-2 ml-1 text-white bg-blue-600 rounded-sm">
-                <svg
-                  className="w-4 h-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-            </form>
+            <NewItem onSubmit={addPro} minLength={MIN_INPUT_LENGTH} />
           </li>
         </ul>
       </div>
 
-      <div className="px-3 text-gray-900">
-        <ul className="">
-          {state.contra.map((item) => (
-            <Item key={item.id} item={item} />
+      <div className="px-1 sm:px-3">
+        <ul className="text-gray-900">
+          {contra.map((item) => (
+            <Item
+              key={item.id}
+              item={item}
+              active={selected === item.id}
+              onDelete={() => removeContra(item.id)}
+              onClick={() =>
+                selected === item.id ? setSelected(null) : setSelected(item.id)
+              }
+            />
           ))}
+          <li className="w-full mt-4">
+            <NewItem onSubmit={addContra} minLength={MIN_INPUT_LENGTH} />
+          </li>
         </ul>
       </div>
     </div>

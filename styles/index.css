@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 #procon-list {
-  grid-template-rows: 3rem auto;
+  grid-template-rows: 4rem auto;
 }
