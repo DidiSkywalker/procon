@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 #procon-list {
-  grid-template-rows: 5rem auto;
+  grid-template-rows: 2rem 5rem auto;
 }
 
 input[type='range']::-webkit-slider-thumb {

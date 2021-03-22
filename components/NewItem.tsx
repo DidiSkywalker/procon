@@ -10,7 +10,7 @@ interface Props {
 export default function NewItem({
   onSubmit,
   setWeightPrompt,
-  minLength = 0,
+  minLength = 1,
 }: Props) {
   const [value, setValue] = useState('')
   const [error, setError] = useState(false)
@@ -52,6 +52,7 @@ export default function NewItem({
       <div className="flex flex-col space-y-1">
         <button
           type="button"
+          title="Set Weight"
           className="box-content flex-grow-0 p-2 ml-1 text-gray-900 bg-gray-100 rounded-sm opacity-30 hover:opacity-100 focus:outline-none focus:opacity-100"
           onClick={() =>
             setWeightPrompt({
@@ -73,7 +74,10 @@ export default function NewItem({
             />
           </svg>
         </button>
-        <button className="box-content flex-grow-0 p-2 ml-1 text-gray-900 bg-gray-100 rounded-sm opacity-30 hover:opacity-100 focus:outline-none focus:opacity-100">
+        <button
+          title="Create item"
+          className="box-content flex-grow-0 p-2 ml-1 text-gray-900 bg-gray-100 rounded-sm opacity-30 hover:opacity-100 focus:outline-none focus:opacity-100"
+        >
           <svg
             className="w-4 h-4"
             xmlns="http://www.w3.org/2000/svg"

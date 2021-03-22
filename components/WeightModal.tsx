@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { FIB_TABLE } from '../utils'
 import Modal from './Modal'
 
 export interface WeightPrompt {
@@ -24,7 +25,7 @@ export default function WeightModal({ weightPrompt }: Props) {
         <h3 className="text-3xl text-center text-gray-50">Set Weight</h3>
 
         <output className="w-1/12 py-0.5 mx-auto mt-6 text-lg text-center border border-gray-300 rounded-3xl text-gray-50">
-          {weight}
+          {FIB_TABLE[weight]}
         </output>
         <input
           className="w-full h-2 mx-auto mt-5 mb-10 bg-gray-600 outline-none appearance-none md:w-3/4 xl:w-1/2 rounded-3xl "
@@ -32,7 +33,7 @@ export default function WeightModal({ weightPrompt }: Props) {
           name="weight"
           id="weight"
           min={1}
-          max={10}
+          max={7}
           step={1}
           value={weight}
           onChange={(event) => setWeight(event.target.valueAsNumber)}

@@ -3,13 +3,13 @@ import { v4 } from 'uuid'
 import { ListItem } from '../interfaces'
 
 export default function useList(
-  pro: boolean,
   entries?: ListItem[]
 ): [
   ListItem[],
   (values: { text: string; weight: number; [x: string]: any }) => void,
   (id: string) => void,
-  () => void
+  () => void,
+  (items: ListItem[]) => void
 ] {
   const [list, setList] = useState(entries || [])
 
@@ -24,11 +24,9 @@ export default function useList(
     const item = {
       id: v4(),
       text,
-      pro,
       weight,
       ...rest,
     }
-    console.log('add', item)
     setList([...list, item])
   }
 
@@ -40,5 +38,9 @@ export default function useList(
     setList([])
   }
 
-  return [list, add, remove, clear]
+  const set = (items: ListItem[]) => {
+    setList(items)
+  }
+
+  return [list, add, remove, clear, set]
 }
