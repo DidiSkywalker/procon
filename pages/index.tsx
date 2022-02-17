@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ProConList from '../components/ProConList'
 
 export default function IndexPage() {
